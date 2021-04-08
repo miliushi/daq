@@ -32,12 +32,26 @@ void DataClient::initTR(void)
     tr_records.clear();
 }
 
+
+void DataClient::initPD(void)
+{
+    pd_records.clear();
+}
+
 void DataClient::addTR(void)
 {
     const char chardata[] = {'?', '?', 0, 2, 0, 1, '?', '?', 'T', 'R'};
     const QByteArray record = QByteArray(chardata, sizeof(chardata));
 
     tr_records.append(record);
+}
+
+void DataClient::addPD(void)
+{
+    const char chardata[] = {'?', '?', 0, 2, 0, 1, '?', '?', 'P', 'D'};
+    const QByteArray record = QByteArray(chardata, sizeof(chardata));
+
+    pd_records.append(record);
 }
 
 void DataClient::initES(void)
@@ -65,6 +79,20 @@ void DataClient::appendTR(const char* block_name, uint16_t* data, int data_size)
     {
         tr_records.last().append((data[n] >> 8) & 0x00ff);
         tr_records.last().append(data[n] & 0x00ff);
+    }
+}
+
+void DataClient::appendPD(const char* block_name, uint16_t* data, int data_size)
+{
+    uint16_t block_length = 2 + (data_size);
+    pd_records.last().append((block_length >> 8) & 0xff);
+    pd_records.last().append(block_length & 0xff);
+    pd_records.last().append(block_name, 2);
+    // swap bytes
+    for(int n=0; n<data_size; n++)
+    {
+        pd_records.last().append((data[n] >> 8) & 0x00ff);
+        pd_records.last().append(data[n] & 0x00ff);
     }
 }
 
@@ -107,6 +135,22 @@ bool DataClient::sendTR(void)
         tr_records[n][6] = tr_records.at(n)[0];
         tr_records[n][7] = tr_records.at(n)[1];
         return_value &= writeData(tr_records.at(n));
+    }
+
+    return return_value;
+}
+
+bool DataClient::sendPD(void)
+{
+    bool return_value = true;
+    // set record size
+    for(int n=0; n<pd_records.count(); n++)
+    {
+        pd_records[n][0] = (((pd_records.at(n).size() / 2) - 3) >> 8) & 0xff;
+        pd_records[n][1] = ((pd_records.at(n).size() / 2) - 3) & 0xff;
+        pd_records[n][6] = pd_records.at(n)[0];
+        pd_records[n][7] = pd_records.at(n)[1];
+        return_value &= writeData(pd_records.at(n));
     }
 
     return return_value;

@@ -20,6 +20,8 @@ MainThread::MainThread()
     connect(ext_io_thread, SIGNAL(gateEnd()), this, SLOT(gateEnd()));
     connect(ext_io_thread, SIGNAL(startDaq()), this, SLOT(startDaq()));
     connect(ext_io_thread, SIGNAL(stopDaq()), this, SLOT(stopDaq()));
+
+    output = true;
 }
 
 MainThread::~MainThread(void)
@@ -131,13 +133,17 @@ void MainThread::run(void)
 void MainThread::gateBegin(void)
 {
     gate_begin_flag = true;
-    qDebug("gateBegin");
+    if(output){
+        qDebug("gateBegin");
+    }
 }
 
 void MainThread::gateEnd(void)
 {
     gate_end_flag = true;
-    qDebug("gateEnd");
+    if(output){
+        qDebug("gateEnd");
+    }
 }
 
 void MainThread::extioFatalError(void)
@@ -166,11 +172,14 @@ void MainThread::waitGateBegin(void)
 
 void MainThread::waitGateEnd(void)
 {
-    qDebug("waiting for the gate end");
+    if(output){
+        qDebug("waiting for the gate end");
+    }
     gate_end_flag = false;
     while(!gate_end_flag && daq_is_running && !abort)
     {
         msleep(1);
     }
-    qDebug("gate end");
-}
+    if(output){
+        qDebug("gate end");
+    }}

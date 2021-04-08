@@ -12,9 +12,9 @@ TEMPLATE = app
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
-INCLUDEPATH += ../lib/libssh-0.7.5/include/
+INCLUDEPATH += /home/daq/project/qt/lib/libssh-0.7.5/include/
 INCLUDEPATH += /usr/include/libftdi1/
-LIBS += ../lib/build-libssh-0.7.5-Desktop-Release/src/libssh.so
+LIBS += /home/daq/project/qt/lib/build-libssh-0.7.5-Desktop-Release/src/libssh.so
 LIBS += -lz -lcrypto -lftdi1
 
 SOURCES += main.cpp \
@@ -32,10 +32,11 @@ SOURCES += main.cpp \
     dataclient.cpp \
     modulecounter8.cpp \
     modulebrrpk32.cpp \
-    modulele35.cpp \
     modulekb003.cpp \
     moduletl2.cpp \
-    modules335.cpp
+    modules335.cpp \
+    modulep267.cpp \
+    modulele83.cpp
 
 HEADERS += \
     mainthread.h \
@@ -55,9 +56,10 @@ HEADERS += \
     modulecounter8.h \
     qbus.h \
     modulebrrpk32.h \
-    modulele35.h \
     modulekb003.h \
     moduletl2.h \
-    modules335.h
+    modules335.h \
+    modulep267.h \
+    modulele83.h
 
 FORMS +=

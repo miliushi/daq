@@ -47,7 +47,6 @@ void ExtIOThread::run(void)
                 emit gateEnd();
             }
         }
-
         readControl();
         msleep(10);
     }
@@ -56,7 +55,7 @@ void ExtIOThread::run(void)
 void ExtIOThread::readControl(void)
 {
     static bool last_daq_enable = false;
-    QFile daq_enable_file("daq_enable.txt");
+    QFile daq_enable_file("/home/daq/project/qt/build-daq-Desktop_Qt_5_7_0_GCC_64bit-Release/daq_enable.txt");
     daq_enable_file.open(QFile::ReadOnly);
     QTextStream daq_enable_stream(&daq_enable_file);
     bool daq_enable = daq_enable_stream.readAll().toInt();

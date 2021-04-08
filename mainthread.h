@@ -35,6 +35,8 @@ private:
     bool gate_begin_flag;
     bool gate_end_flag;
 
+    bool output; // terminal write
+
     SpinDAQ* spin_daq;
     ExtIOThread* ext_io_thread;
 };

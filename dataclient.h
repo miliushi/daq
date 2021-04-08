@@ -17,13 +17,17 @@ public:
     void initTR(void);  // clear TR records list
     void addTR(void);   // append new TR record
     void initES(void);  // clear ES record data
+    void initPD(void);  // clear PD record data
+    void addPD(void);   // append new PD record
 
     void appendTR(const char* block_name, uint16_t* data, int data_size); // data size in words
     void appendES(const char* block_name, uint16_t* data, int data_size); // data size in words
+    void appendPD(const char* block_name, uint16_t* data, int data_size); // data size in words
 
     bool sendBS(void);
     bool sendTR(void);
     bool sendES(void);
+    bool sendPD(void);
 
     QHostAddress server_host;
     int server_port;
@@ -38,6 +42,8 @@ private:
 
     //QByteArray tr_record;
     QByteArrayList tr_records;
+    QByteArrayList pd_records;
+
     QByteArray es_record;
 
     bool first_packet_flag;
